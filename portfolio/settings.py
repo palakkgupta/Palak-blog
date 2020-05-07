@@ -25,7 +25,7 @@ SECRET_KEY = 'l#9xznlr=^sps5%pc-796d3-sv=tqwtjv)0j!#*)y$$4xiocw4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['palakportfolio.herokuapp.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -127,4 +127,18 @@ STATIC_ROOT=os.path.join(BASE_DIR,'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT=BASE_DIR
+
+if os.getcwd() == '/app':
+    import dj_database_url
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(db_from_env)
+    #Honor the 'X-forwarded-Proto' header for request.is_secure().
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+    #Allow all host headers
+    ALLOWED_HOSTS = ['palakportfolio.herokuapp.com']
+    DEBUG = True
+
+    #Static asset configuration
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
